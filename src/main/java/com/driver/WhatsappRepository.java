@@ -30,6 +30,7 @@ public class WhatsappRepository {
         if(userMobile.contains(mobile)){
             throw new Exception("User already exists");
         }
+        User user = new User(name,mobile);
         userMobile.add(mobile);
         return "SUCCESS";
     }
@@ -38,11 +39,13 @@ public class WhatsappRepository {
         if(users.size() == 2){
             Group gp = new Group(users.get(1).getName(),2);
             groupUserMap.put(gp,users);
+            groupMessageMap.put(gp,new ArrayList<>());
             return gp;
         }else {
             customGroupCount++;
             Group gp = new Group("Group " + customGroupCount,users.size());
             groupUserMap.put(gp,users);
+            groupMessageMap.put(gp,new ArrayList<>());
             adminMap.put(gp,users.get(0));
             return gp;
         }
@@ -50,7 +53,7 @@ public class WhatsappRepository {
     public int createMessage(String content){
         messageId++;
         Message m = new Message(messageId,content);
-        return messageId;
+        return m.getId();
     }
     public int sendMessage(Message message,User sender, Group group) throws Exception{
         if(!groupUserMap.containsKey(group)){
@@ -81,7 +84,6 @@ public class WhatsappRepository {
         return "SUCCESS";
     }
     public int removeUser(User user) throws Exception{
-        boolean userFound = false;
         for(Group gp: groupUserMap.keySet()) {
             List<User> userList = groupUserMap.get(gp);
             if (userList.contains(user)) {
