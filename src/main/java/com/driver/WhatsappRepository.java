@@ -108,7 +108,7 @@ public class WhatsappRepository {
         TreeMap<Integer,String> map = new TreeMap<>();
         ArrayList <Integer> list = new ArrayList<>();
         for (Message m: senderMap.keySet()){
-            if( m.getTimestamp().compareTo(start) > 0 || m.getTimestamp().compareTo(end) < 0){
+            if( m.getTimestamp().compareTo(start) > 0 && m.getTimestamp().compareTo(end) < 0){
                 map.put(m.getId(),m.getContent());
                 list.add(m.getId());
             }
